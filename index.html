@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .username, .password {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .username input, .password input, .inp {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .password-wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-right: 30px;
+        }
+        .password-wrapper i {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+        }
+        .fa-eye-slash {
+            display: none;
+        }
+        .output, .res, .refresh {
+            margin: 10px 0;
+            text-align: center;
+        }
+        .refresh {
+            cursor: pointer;
+            color: rgb(224, 76, 17);
+            font-weight: bold;
+        }
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            width: 100%;
+
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <form action="">
+            <span>Username is "abc" and password "123"</span>
+            <br>
+            <div class="username">
+                <label for="user">Username</label>
+                <input type="text" id="user">
+            </div>
+            <div class="password">
+                <label for="pass">Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="pass">
+                    <i class="fa-solid fa-eye-slash" id="show" onclick="hidenseek()"></i>
+                    <i class="fa-solid fa-eye" id="hide" onclick="hidenseek()"></i>
+                </div>
+            </div>
+            <div class="output"></div>
+            <input type="text" class="inp">
+            <div class="refresh" onclick="generatecode()">Refresh</div>
+            <input type="submit" id="check1" value="Submit">
+        </form>
+    </div>
+    <script>
+        let username = "abc";
+        let password = "123";
+
+        function hidenseek() {
+            let pass = document.getElementById("pass");
+            let show = document.getElementById("show");
+            let hide = document.getElementById("hide");
+            if (pass.type === "password") {
+                pass.type = "text";
+                hide.style.display = "none";
+                show.style.display = "inline-block";
+            } else {
+                pass.type = "password";
+                show.style.display = "none";
+                hide.style.display = "inline-block";
+            }
+        }
+
+        function generatecode() {
+            const char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+            const captchalength = 6;
+            let finalcode = "";
+            for (let i = 0; i < captchalength; i++) {
+                let captchindex = Math.floor(Math.random() * char.length);
+                finalcode += char.charAt(captchindex);
+            }
+            document.querySelector(".output").textContent = finalcode;
+            document.querySelector(".inp").value = "";
+        }
+
+        document.getElementById("check1").addEventListener('click', function(e) {
+            e.preventDefault();
+            let users = document.getElementById("user").value;
+            let passs = document.getElementById("pass").value;
+            let chatchacheck = document.querySelector(".inp").value;
+            let generatedcheck = document.querySelector(".output").textContent;
+            if (username === users && password === passs && chatchacheck === generatedcheck) {
+                swal({
+                    title: "User Logged In",
+                    text: "You clicked the button!",
+                    icon: "success",
+                });
+            } else {
+                swal({
+                    title: "Login Failed",
+                    text: "Incorrect credentials or captcha!",
+                    icon: "warning",
+                });
+            }
+        });
+
+        generatecode();
+    </script>
+</body>
+</html>
